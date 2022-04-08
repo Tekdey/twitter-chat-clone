@@ -1,0 +1,31 @@
+{
+  "name": "twitter-chat",
+  "version": "1.0.0",
+  "description": "Clone twitter chat",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Tekdey/twitter-chat-clone.git"
+  },
+  "author": "Tekdey",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Tekdey/twitter-chat-clone/issues"
+  },
+  "homepage": "https://github.com/Tekdey/twitter-chat-clone#readme",
+  "devDependencies": {
+    "nodemon": "^2.0.15"
+  },
+  "dependencies": {
+    "bcrypt": "^5.0.1",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.0",
+    "express": "^4.17.3",
+    "mongoose": "^6.2.10",
+    "socket.io": "^4.4.1"
+  }
+}

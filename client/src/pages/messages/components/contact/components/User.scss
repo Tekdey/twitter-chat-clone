@@ -1,0 +1,17 @@
+.contact{
+    margin: 20px;
+    display: flex;
+    flex-direction: column;
+    cursor: pointer;
+    .contact-user{
+        display: flex;
+        align-items: center;
+    }
+    img{
+        width: 50px;
+        border-radius: 50%;
+    }
+}
+.contact:hover{
+    background-color: #14171A;
+}
