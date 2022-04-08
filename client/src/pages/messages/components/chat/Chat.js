@@ -21,7 +21,6 @@ export default function Chat() {
             type="text"
             className="inputTextChat"
             placeholder="Entrez un nouveau message"
-            onChange={(e) => setChat(e.currentTarget.value)}
           />
           <input type="submit" className="inputSubmitChat" />
         </form>

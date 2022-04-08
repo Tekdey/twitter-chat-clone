@@ -1,0 +1,10 @@
+.register-container{
+    form{
+        display: flex;
+        flex-direction: column;
+        input{
+            margin: 3px;
+            height: 20px;
+        }
+    }
+}
