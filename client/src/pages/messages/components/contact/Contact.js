@@ -1,8 +1,35 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./Contact.scss";
 import Users from "./components/Users";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import { allUsersRoute } from "../../../../utils/APIRoutes";
 
 export default function Contact() {
+  const navigate = useNavigate();
+
+  const [contact, setContact] = useState([]);
+  const [currentUser, setCurrentUser] = useState(undefined);
+  useEffect(() => {
+    async function fetchCurrentUsers() {
+      if (!localStorage.getItem("chat-app-user")) {
+        navigate("/login");
+      } else {
+        setCurrentUser(await JSON.parse(localStorage.getItem("chat-app-user")));
+      }
+    }
+    fetchCurrentUsers();
+  }, []);
+  useEffect(() => {
+    async function fetchUsers() {
+      if (currentUser) {
+        const data = await axios.get(`${allUsersRoute}/${currentUser._id}`);
+        setContact(data.data);
+      }
+    }
+    fetchUsers();
+  }, [currentUser]);
+
   return (
     <div className="container-contact">
       <div className="header">
@@ -33,19 +60,7 @@ export default function Contact() {
       <input type="text" placeholder="Cherchez dans les messages privés" />
       <div className="container-all-contacts">
         {/*////////////////// CONTACTS ///////////////////*/}
-        <Users />
-        <Users />
-        <Users />
-        <Users />
-        <Users />
-        <Users />
-        <Users />
-        <Users />
-        <Users />
-        <Users />
-        <Users />
-        <Users />
-        <Users />
+        <Users contacts={contact} currentUser={currentUser} />
       </div>
     </div>
   );

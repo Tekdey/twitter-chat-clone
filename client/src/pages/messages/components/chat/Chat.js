@@ -4,6 +4,8 @@ import UsersMessagesOther from "../UsersMessages/UsersMessagesOther";
 import "./Chat.scss";
 
 export default function Chat() {
+  
+
   return (
     <div className="container-chat">
       <div className="container-header-chat">
