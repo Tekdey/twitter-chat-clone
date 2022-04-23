@@ -1,6 +1,9 @@
 const User = require("../models/users.models.js");
 const bcrypt = require("bcrypt");
-const { generateAccessToken } = require("../utils/jwt.utils");
+const {
+  generateAccessToken,
+  refreshAccessToken,
+} = require("../utils/jwt.utils");
 
 module.exports.register = async (req, res) => {
   try {
@@ -57,7 +60,9 @@ module.exports.login = async (req, res) => {
 
     // JWT Token
     const token = generateAccessToken({ username, password });
-    return res.status(200).json({ status: true, token });
+    const refreshedToken = refreshAccessToken({ username, password });
+
+    return res.status(200).json({ status: true, token, refreshedToken });
   } catch (error) {
     console.log(error);
     return res.status(500).json({ msg: "Error, please try later", error });

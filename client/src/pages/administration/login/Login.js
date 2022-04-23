@@ -25,7 +25,6 @@ export default function Login() {
       navigate("/");
     }
   }, []);
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (handleValidation()) {

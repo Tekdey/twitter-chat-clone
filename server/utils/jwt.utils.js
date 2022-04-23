@@ -6,4 +6,10 @@ const generateAccessToken = (user) => {
   });
 };
 
-module.exports = { generateAccessToken };
+const refreshAccessToken = (user) => {
+  return jwt.sign(user, process.env.JWT_REFRESH_TOKEN_ACCESS_PRIVATE_KEY, {
+    expiresIn: "5m",
+  });
+};
+
+module.exports = { generateAccessToken, refreshAccessToken };
