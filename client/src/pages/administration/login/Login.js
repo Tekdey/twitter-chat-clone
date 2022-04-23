@@ -4,51 +4,108 @@ import "./Login.scss";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
-import { loginRoute } from "../../../utils/APIRoutes";
+import { loginRoute, tokenRoute } from "../../../utils/APIRoutes";
+
+const toastOptions = {
+  position: "bottom-right",
+  autoClose: 8000,
+  pauseOnHover: true,
+  draggable: true,
+  theme: "dark",
+};
+
+const instance = axios.create({
+  baseURL: tokenRoute,
+});
 
 export default function Login() {
   const navigate = useNavigate();
+  const [refreshToken, setRefreshToken] = useState(null);
   const [values, setValues] = useState({
     username: "",
     password: "",
   });
-  const toastOptions = {
-    position: "bottom-right",
-    autoClose: 8000,
-    pauseOnHover: true,
-    draggable: true,
-    theme: "dark",
-  };
 
-  useEffect(() => {
-    if (localStorage.getItem("chat-app-user")) {
-      navigate("/");
-    }
-  }, []);
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (handleValidation()) {
-      const { password, username } = values;
-
-      const { data } = await axios.post(loginRoute, {
-        username,
-        password,
-      });
-      if (data.status === false) {
-        toast.error(data.msg, toastOptions);
-      }
-      if (data.status === true) {
-        localStorage.setItem("chat-app-user", JSON.stringify(data.user));
-        navigate("/");
-      }
+      instance
+        .post(loginRoute, {
+          username: values.username,
+          password: values.password,
+        })
+        .then((response) => {
+          console.log("auth");
+          setRefreshToken(response.data.refreshToken);
+          instance.defaults.headers.common[
+            "authorization"
+          ] = `Bearer ${response.data.token}`;
+          loadUserInfos();
+        })
+        .catch((error) => {
+          console.log(error.response.status);
+        });
     }
   };
-  const handleValidation = (e) => {
+
+  function loadUserInfos() {
+    instance
+      .get("/access")
+      .then((response) => {
+        console.log(response.data);
+        if (response) {
+        }
+      })
+      .catch((err) => {
+        console.log(err.response.status);
+      });
+  }
+
+  useEffect(() => {
+    instance.interceptors.response.use(
+      (response) => {
+        return response;
+      },
+      async (error) => {
+        const initial = error.config;
+        if (
+          error.config.url !== "/refresh" &&
+          error.response.status === 401 &&
+          initial._retry !== true
+        ) {
+          initial._retry = true;
+          if (refreshToken && refreshToken !== "") {
+            instance.defaults.headers.common[
+              "authorization"
+            ] = `Bearer ${refreshToken}`;
+            console.log("refresh token");
+            await instance
+              .post("/refresh")
+              .then((response) => {
+                instance.defaults.headers.common[
+                  "authorization"
+                ] = `Bearer ${response.data.refreshToken}`;
+                initial.headers[
+                  "authorization"
+                ] = `Bearer ${response.data.refreshToken}`;
+              })
+              .catch((error) => {
+                console.log(error.response.status);
+                setRefreshToken(null);
+              });
+            return instance(initial);
+          }
+        }
+      }
+    );
+  }, [refreshToken]);
+
+  const handleValidation = () => {
     const { password, username } = values;
-    if (password === "") {
+    if (password.length < 5) {
       toast.error("username and password requiered", toastOptions);
       return false;
-    } else if (username.length === "") {
+    } else if (username.length < 5) {
       toast.error("username requiered", toastOptions);
       return false;
     }

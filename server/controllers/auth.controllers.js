@@ -23,15 +23,14 @@ module.exports.register = async (req, res) => {
     }
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    // Jwt token
-
-    const token = generateAccessToken({ username, email, password });
-
-    const user = await User.create({
+    await User.create({
       email,
       username,
       password: hashedPassword,
     });
+    // Jwt token
+
+    const token = generateAccessToken({ username });
 
     return res.status(200).json({ status: true, token }); // Return jwt token
   } catch (error) {
@@ -59,10 +58,10 @@ module.exports.login = async (req, res) => {
     }
 
     // JWT Token
-    const token = generateAccessToken({ username, password });
-    const refreshedToken = refreshAccessToken({ username, password });
+    const token = generateAccessToken({ username });
+    const refreshToken = refreshAccessToken({ username });
 
-    return res.status(200).json({ status: true, token, refreshedToken });
+    return res.status(200).json({ status: true, token, refreshToken });
   } catch (error) {
     console.log(error);
     return res.status(500).json({ msg: "Error, please try later", error });

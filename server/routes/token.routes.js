@@ -28,9 +28,9 @@ router.post("/refresh", (req, res) => {
       // Todo
       delete user.iat;
       delete user.exp;
-      const refreshedToken = generateAccessToken(user);
+      const refreshToken = generateAccessToken(user);
       res.send({
-        accessToken: refreshedToken,
+        refreshToken,
       });
     }
   );
