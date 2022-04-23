@@ -29,7 +29,6 @@ export default function Login() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (handleValidation()) {
-      console.log("called");
       const { password, username } = values;
 
       const { data } = await axios.post(loginRoute, {
