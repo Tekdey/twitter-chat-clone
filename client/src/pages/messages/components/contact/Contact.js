@@ -10,16 +10,9 @@ export default function Contact() {
 
   const [contact, setContact] = useState([]);
   const [currentUser, setCurrentUser] = useState(undefined);
-  useEffect(() => {
-    async function fetchCurrentUsers() {
-      if (!localStorage.getItem("chat-app-user")) {
-        navigate("/login");
-      } else {
-        setCurrentUser(await JSON.parse(localStorage.getItem("chat-app-user")));
-      }
-    }
-    fetchCurrentUsers();
-  }, []);
+
+  // Todo Private route
+
   useEffect(() => {
     async function fetchUsers() {
       if (currentUser) {

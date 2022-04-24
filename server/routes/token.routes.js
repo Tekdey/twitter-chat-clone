@@ -13,8 +13,6 @@ router.post("/refresh", (req, res) => {
   const authorizationHeader = req.headers["authorization"];
   const token = authorizationHeader && authorizationHeader.split(" ")[1];
 
-  console.log(token);
-
   if (!token) {
     return res.sendStatus(401);
   }
@@ -25,7 +23,6 @@ router.post("/refresh", (req, res) => {
       if (error) {
         return res.sendStatus(401);
       }
-      // Todo
       delete user.iat;
       delete user.exp;
       const refreshToken = generateAccessToken(user);

@@ -4,7 +4,6 @@ module.exports.accessToken = (req, res, next) => {
   try {
     const authorizationHeader = req.headers["authorization"];
     const token = authorizationHeader && authorizationHeader.split(" ")[1];
-
     if (!token) {
       return res.sendStatus(401);
     }

@@ -7,10 +7,7 @@ import Auth from "./pages/Auth/Auth";
 
 ReactDOM.render(
   <BrowserRouter>
-    <Routes>
-      <Route path="/auth" element={<Auth />} />
-      <Route path="/" element={<App />} />
-    </Routes>
+    <App />
   </BrowserRouter>,
   document.getElementById("root")
 );

@@ -3,8 +3,10 @@ import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
-import { loginRoute, tokenRoute } from "../../utils/APIRoutes";
+import { loginRoute, signUpRoute, tokenRoute } from "../../utils/APIRoutes";
 import Input from "../../components/Input/Input"
+
+import jwt_decode from "jwt-decode"
 
 
 const INITIAL_STATE = {
@@ -32,6 +34,25 @@ export default function Auth() {
   const [refreshToken, setRefreshToken] = useState(null);
   const [loginForm, setLoginForm] = useState(true)
   const [values, setValues] = useState(INITIAL_STATE);
+
+
+
+  useEffect(() => {
+
+    const local = JSON.parse(localStorage.getItem('token'))
+
+    if(local){
+      const decodedToken = jwt_decode(local.token)
+      const currentDate = new Date()
+  
+      if (decodedToken.exp * 1000 > currentDate.getTime()){
+        navigate('/')
+      }
+    }
+  }, [navigate])
+
+
+
   const loginData = {
     username: values.username,
     password: values.password
@@ -46,13 +67,14 @@ export default function Auth() {
     if (handleValidation()) {
 
       instance
-        .post(loginRoute, loginForm ? loginData : signUpData)
+        .post(loginForm ? loginRoute : signUpRoute, loginForm ? loginData : signUpData)
         .then((response) => {
           console.log("auth");
           setRefreshToken(response.data.refreshToken);
           instance.defaults.headers.common[
             "authorization"
           ] = `Bearer ${response.data.token}`;
+          localStorage.setItem('token', JSON.stringify({token: response.data.token}));
           loadUserInfos();
         })
         .catch((error) => {
@@ -67,7 +89,7 @@ export default function Auth() {
       .then((response) => {
         console.log(response.data);
         if (response) {
-          // Todo add cookie
+          console.log(response);
         }
       })
       .catch((err) => {
@@ -78,6 +100,7 @@ export default function Auth() {
   useEffect(() => {
     instance.interceptors.response.use(
       (response) => {
+        navigate('/')
         return response;
       },
       async (error) => {
@@ -92,7 +115,6 @@ export default function Auth() {
             instance.defaults.headers.common[
               "authorization"
             ] = `Bearer ${refreshToken}`;
-            console.log("refresh token");
             await instance
               .post("/refresh")
               .then((response) => {
