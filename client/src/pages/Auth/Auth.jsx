@@ -1,10 +1,18 @@
 import React, { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import "./Login.scss";
+import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
-import { loginRoute, tokenRoute } from "../../../utils/APIRoutes";
+import { loginRoute, tokenRoute } from "../../utils/APIRoutes";
+import Input from "../../components/Input/Input"
+
+
+const INITIAL_STATE = {
+  username: "",
+  email: "",
+  password: "",
+  confirmPassword: "",
+}
 
 const toastOptions = {
   position: "bottom-right",
@@ -18,22 +26,27 @@ const instance = axios.create({
   baseURL: tokenRoute,
 });
 
-export default function Login() {
+export default function Auth() {
   const navigate = useNavigate();
-  const [refreshToken, setRefreshToken] = useState(null);
-  const [values, setValues] = useState({
-    username: "",
-    password: "",
-  });
 
+  const [refreshToken, setRefreshToken] = useState(null);
+  const [loginForm, setLoginForm] = useState(true)
+  const [values, setValues] = useState(INITIAL_STATE);
+  const loginData = {
+    username: values.username,
+    password: values.password
+  }
+  const signUpData = {
+    username: values.username,
+    email: values.email,
+    password: values.password
+  }
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (handleValidation()) {
+
       instance
-        .post(loginRoute, {
-          username: values.username,
-          password: values.password,
-        })
+        .post(loginRoute, loginForm ? loginData : signUpData)
         .then((response) => {
           console.log("auth");
           setRefreshToken(response.data.refreshToken);
@@ -54,6 +67,7 @@ export default function Login() {
       .then((response) => {
         console.log(response.data);
         if (response) {
+          // Todo add cookie
         }
       })
       .catch((err) => {
@@ -115,30 +129,29 @@ export default function Login() {
     e.preventDefault();
     setValues({ ...values, [e.target.name]: e.target.value });
   };
+  const handleClick = () => {
+    setLoginForm(_ => !_)
+    setValues(INITIAL_STATE)
+  }
 
   return (
     <>
       <div className="login-container">
         <form onSubmit={(e) => handleSubmit(e)}>
           <div className="login-header">
-            <h1>Register</h1>
+            <h1>{loginForm ? 'Login' : 'Sign up' }</h1>
           </div>
-          <input
-            type="text"
-            placeholder="Username"
-            name="username"
-            onChange={(e) => handleChange(e)}
-            min="3"
-          />
-          <input
-            type="password"
-            placeholder="Password"
-            name="password"
-            onChange={(e) => handleChange(e)}
-          />
-          <button type="submit">Login</button>
+          <Input handleChange={handleChange} type={'text'}  placeholder={"Username"} name={"username"} min={"3"} />
+          {!loginForm && ( <Input handleChange={handleChange} type={'email'}  placeholder={"Email"} name={"email"} /> )}
+          <Input handleChange={handleChange} type={'password'}  placeholder={"Password"} name={"password"} />
+          {!loginForm && ( <Input handleChange={handleChange} type={'password'}  placeholder={"Confirm password"} name={"confirmPassword"} /> )}
+          
+          <button type="submit">{loginForm ? 'Login' : 'Sign up'}</button>
           <span>
-            already have an account ? <Link to="/register">Login</Link>
+            {loginForm ? "You don't have an account ?" : "Already have an account ?" }
+                <span onClick={handleClick}>
+                  {loginForm ? 'Sign up' : 'Login'}
+                </span>
           </span>
         </form>
       </div>
