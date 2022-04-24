@@ -7,12 +7,13 @@ import { Routes, Route } from "react-router-dom";
 
 function App() {
   return (
-    <div className="App">
+    <div>
       <Routes>
         <Route path="/auth" element={<Auth />} />
         <Route element={<ProtectedRoutes />}>
           <Route path="/" element={<Home />} />
         </Route>
+        {/* <Route path="/test" element={<Test />} /> */}
       </Routes>
     </div>
   );

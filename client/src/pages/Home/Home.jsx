@@ -1,10 +1,8 @@
 import React from "react";
-import Navbar from "../../components/navbar/Navbar";
-import Messages from "../messages/Messages";
+import Navbar from "../../components/navbar/Navbar"
 
 const Home = () => {
-  return (<Navbar />,
-  <Messages />)
+  return (<Navbar />)
 };
 
 export default Home;

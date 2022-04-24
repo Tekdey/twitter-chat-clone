@@ -7,8 +7,8 @@ const useAuth = () => {
 
   const local = JSON.parse(localStorage.getItem("token"));
   if (local) {
-    let decodedToken = jwt_decode(local.token);
-    let currentDate = new Date();
+    const decodedToken = jwt_decode(local.token);
+    const currentDate = new Date();
 
     // Check if jwt exp
 
