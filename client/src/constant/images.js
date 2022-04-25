@@ -8,6 +8,7 @@ import notifications from "../assets/navigation/notifications.svg";
 import profil from "../assets/navigation/profil.svg";
 import search from "../assets/navigation/search.svg";
 import logo from "../assets/navigation/logo.png";
+import settings from "../assets/navigation/settings.svg";
 
 // eslint-disable-next-line import/no-anonymous-default-export
 export default {
@@ -21,4 +22,5 @@ export default {
   profil,
   search,
   logo,
+  settings,
 };
