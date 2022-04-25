@@ -9,6 +9,9 @@ import profil from "../assets/navigation/profil.svg";
 import search from "../assets/navigation/search.svg";
 import logo from "../assets/navigation/logo.png";
 import settings from "../assets/navigation/settings.svg";
+import images from "../assets/navigation/images.svg";
+import gif from "../assets/navigation/gif.svg";
+import send from "../assets/navigation/send.svg";
 
 // eslint-disable-next-line import/no-anonymous-default-export
 export default {
@@ -23,4 +26,7 @@ export default {
   search,
   logo,
   settings,
+  images,
+  gif,
+  send,
 };

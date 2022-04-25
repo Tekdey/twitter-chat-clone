@@ -4,8 +4,12 @@ import InputContactList from "../Messages__inputContactList/InputContactList";
 
 const ContactList = () => {
   return  (
-    <div className=" overflow-y-scroll h-full flex flex-col pb-32">
+    <div className="overflow-y-scroll h-screen flex flex-col pb-32">
       <InputContactList />
+        <Contact />
+        <Contact />
+        <Contact />
+        <Contact />
         <Contact />
         <Contact />
         <Contact />

@@ -1,6 +1,7 @@
 import React from "react";
 import { Navigate, Outlet, useLocation } from "react-router-dom";
 import jwt_decode from "jwt-decode";
+import Navbar from "../components/navbar/Navbar";
 
 const useAuth = () => {
   const user = { loggedIn: false };
@@ -29,7 +30,10 @@ const ProtectedRoutes = () => {
   const location = useLocation();
 
   return isAuth ? (
-    <Outlet />
+    <>
+      <Navbar />
+      <Outlet />
+    </>
   ) : (
     <Navigate to="/auth" state={{ from: location }} replace />
   );

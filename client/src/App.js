@@ -10,8 +10,6 @@ import { Routes, Route } from "react-router-dom";
 function App() {
   return (
     <div className="flex">
-      <Navbar />
-
       <Routes>
         <Route path="/auth" element={<Auth />} />
         <Route element={<ProtectedRoutes />}>

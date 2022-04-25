@@ -2,8 +2,8 @@ import React from "react";
 import UserPicture from "../userPicture/UserPicture";
 
 const Contact = () => {
-  return <div className="w-full flex p-2">
-      <UserPicture picWidth='12' picHeight="12" />
+  return <div className="w-full flex p-2 hover:bg-slate-900 bg-opacity-5">
+      <UserPicture picWidth={12} picHeight={12} />
       <div className="flex flex-col w-full px-3">
         <div className="flex justify-between">
           <div>
